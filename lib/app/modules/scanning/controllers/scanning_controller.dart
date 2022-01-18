@@ -1,8 +1,6 @@
 import 'package:get/get.dart';
 
 class ScanningController extends GetxController {
-  //TODO: Implement ScanningController
-
   final count = 0.obs;
   @override
   void onInit() {

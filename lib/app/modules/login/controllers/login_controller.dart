@@ -1,9 +1,7 @@
 import 'package:get/get.dart';
 
 class LoginController extends GetxController {
-  //TODO: Implement LoginController
-
-  final ishidePass = false.obs;
+  final isHiddenPass = true.obs;
   @override
   void onInit() {
     super.onInit();
@@ -17,5 +15,5 @@ class LoginController extends GetxController {
   @override
   void onClose() {}
 
-  void tooglePassView() => ishidePass.value = !ishidePass.value;
+  // void tooglePassView() => isHiddenPass.value = !isHiddenPass.value;
 }

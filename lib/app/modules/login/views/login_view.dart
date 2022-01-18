@@ -13,17 +13,19 @@ class LoginView extends GetView<LoginController> {
   final TextEditingController _cuboxPassTextController =
       TextEditingController();
 
-  bool isHiddenPass = true;
+  // bool isHiddenPass = true;
+
   @override
   Widget build(BuildContext context) {
+    // LoginController controller = Get.put(LoginController());
+    Get.lazyPut<LoginController>(
+      () => LoginController(),
+    );
+
     final size = MediaQuery.of(context).size;
-    final statusBar = MediaQuery.of(context).padding.top;
+    // final statusBar = MediaQuery.of(context).padding.top;
     return Scaffold(
       backgroundColor: Color(0xFF7BD2C3),
-      // appBar: AppBar(
-      //   title: Text('LoginView'),
-      //   centerTitle: true,
-      // ),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
@@ -70,30 +72,33 @@ class LoginView extends GetView<LoginController> {
                         style: TextStyle(color: Colors.white, fontSize: 18),
                       ),
                       const SizedBox(height: 10),
-                      TextField(
-                        obscureText: isHiddenPass,
-                        textAlign: TextAlign.center,
-                        style:
-                            TextStyle(fontSize: 15, color: Color(0xff136A5A)),
-                        enabled: true,
-                        controller: _cuboxPassTextController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
+                      Obx(
+                        () => TextField(
+                          obscureText: controller.isHiddenPass.value,
+                          textAlign: TextAlign.center,
+                          style:
+                              TextStyle(fontSize: 15, color: Color(0xff136A5A)),
+                          enabled: true,
+                          controller: _cuboxPassTextController,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
                             ),
-                          ),
-                          filled: true,
-                          fillColor: Colors.white,
-                          contentPadding: const EdgeInsets.only(
-                              left: 50, bottom: 0, top: 0, right: 0),
-                          suffixIcon: InkWell(
-                            onTap: () {},
-                            child: Icon(
-                              isHiddenPass
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
+                            filled: true,
+                            fillColor: Colors.white,
+                            contentPadding: const EdgeInsets.only(
+                                left: 50, bottom: 0, top: 0, right: 0),
+                            suffixIcon: IconButton(
+                              onPressed: () => controller.isHiddenPass.toggle(),
+                              color: Color(0xff136A5A),
+                              icon: Icon(
+                                controller.isHiddenPass.value
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                              ),
                             ),
                           ),
                         ),
@@ -133,15 +138,16 @@ class LoginView extends GetView<LoginController> {
                     ],
                   ),
                 ),
-                SizedBox(height: size.height * .20), //size.height * .20
+
+                SizedBox(height: size.height * .15), //size.height * .20
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 50),
                   color: Color(0xFF7BD2C3),
-                  height: size.height * .15,
+                  height: size.height * .1,
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
-                      print('Courier ${size.height}');
+                      // print('Courier ${size.height}');
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,

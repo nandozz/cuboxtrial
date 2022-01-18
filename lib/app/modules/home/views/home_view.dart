@@ -1,6 +1,6 @@
 // import 'package:cubox/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
-
+// import 'package:intl/intl.dart';
 import 'package:get/get.dart';
 
 import '../controllers/home_controller.dart';
@@ -8,62 +8,6 @@ import '../../profile/views/profile_view.dart';
 
 class HomeView extends GetView<HomeController> {
   final TextEditingController _noResiTextController = TextEditingController();
-
-  List<String> onDelivery = [
-    '1111111',
-    '222222222222',
-    '33333333333',
-    '4444',
-    '5555',
-    '6',
-    '7'
-  ];
-  List<Map<String, String>> received = [
-    {
-      'number': 'AAAAAAAAA',
-      'date': '1/1/2022',
-    },
-    {
-      'number': 'BBBBBBBB',
-      'date': '2/2/2022',
-    },
-    {
-      'number': 'BBBBBBBB',
-      'date': '2/2/2022',
-    },
-    {
-      'number': 'BBBBBBBB',
-      'date': '2/2/2022',
-    },
-    {
-      'number': 'BBBBBBBB',
-      'date': '2/2/2022',
-    },
-    {
-      'number': 'BBBBBBBB',
-      'date': '2/2/2022',
-    },
-    {
-      'number': 'BBBBBBBB',
-      'date': '2/2/2022',
-    },
-    {
-      'number': 'BBBBBBBB',
-      'date': '2/2/2022',
-    },
-    {
-      'number': 'BBBBBBBB',
-      'date': '2/2/2022',
-    },
-    {
-      'number': 'BBBBBBBB',
-      'date': '2/2/2022',
-    },
-    {
-      'number': 'kkkkkk',
-      'date': '2/2/2022',
-    },
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -74,30 +18,32 @@ class HomeView extends GetView<HomeController> {
       //   leading: IconButton(onPressed: () {}, icon: Icon(Icons.logout_sharp),),
       //   centerTitle: true,
       // ),
-      bottomNavigationBar: Obx(() => BottomNavigationBar(
-            selectedItemColor: Color(0xff136A5A),
-            currentIndex: controller.selectedIndex.value,
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.home,
-                  size: 30,
-                  // color: Color(0xff136A5A),
-                ),
-                label: 'Home',
+      bottomNavigationBar: Obx(
+        () => BottomNavigationBar(
+          selectedItemColor: Color(0xff136A5A),
+          currentIndex: controller.selectedIndex.value,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home,
+                size: 30,
+                // color: Color(0xff136A5A),
               ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.person,
-                  size: 30,
-                ),
-                label: 'Profile',
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.person,
+                size: 30,
               ),
-            ],
-            onTap: (index) {
-              controller.change(index);
-            },
-          )),
+              label: 'Profile',
+            ),
+          ],
+          onTap: (index) {
+            controller.change(index);
+          },
+        ),
+      ),
       body: SafeArea(
         child: Obx(
           () => IndexedStack(
@@ -143,7 +89,7 @@ class HomeView extends GetView<HomeController> {
                             // left: 112,
                             // top: 24,
                             child: GestureDetector(
-                              onTap: () => Get.back(),
+                              onTap: () {},
                               child: Image.asset('assets/icons/cubox-icon.png'),
                             ),
                           ),
@@ -168,7 +114,7 @@ class HomeView extends GetView<HomeController> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            SizedBox(height: 50),
+                            SizedBox(height: 70),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -189,10 +135,14 @@ class HomeView extends GetView<HomeController> {
                                       child: TextField(
                                         controller: _noResiTextController,
                                         style: TextStyle(
-                                            fontSize: 15,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
                                             color: Color(0xff5C5C5C)),
                                         decoration: InputDecoration(
                                           hintText: 'No. Resi',
+                                          hintStyle: TextStyle(
+                                            color: Color(0xff9C9C9C),
+                                          ),
                                           focusedBorder: OutlineInputBorder(
                                             borderSide: BorderSide(
                                               color: Color(0xff136A5A),
@@ -222,7 +172,11 @@ class HomeView extends GetView<HomeController> {
                                       ),
                                     ),
                                     IconButton(
-                                      onPressed: () => print('Add resi'),
+                                      onPressed: () {
+                                        controller.onDelivery
+                                            .add(_noResiTextController.text);
+                                        _noResiTextController.text = '';
+                                      },
                                       padding: EdgeInsets.zero,
                                       icon: Icon(
                                         Icons.add_box_outlined,
@@ -259,282 +213,319 @@ class HomeView extends GetView<HomeController> {
 
                                       //TabBarView
                                       Container(
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 10),
+                                        padding: EdgeInsets.only(
+                                            top: 20, bottom: 50),
                                         height: size.height *
-                                            .54, //height of TabBarView
+                                            .5, //height of TabBarView
                                         decoration: BoxDecoration(
                                             border: Border(
                                                 top: BorderSide(
                                                     color: Colors.grey,
                                                     width: 0.5))),
-                                        child: TabBarView(
-                                          children: <Widget>[
-                                            // ALL STATUS
-                                            Container(
-                                              child: SingleChildScrollView(
-                                                child: Column(
-                                                  children: [
-                                                    Column(
-                                                      children: received.map(
-                                                        (data) {
-                                                          return Column(
-                                                            children: [
-                                                              Container(
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .all(
-                                                                    Radius
-                                                                        .circular(
-                                                                            10),
-                                                                  ),
-                                                                  color: Color(
-                                                                      0xffF1FDFB),
-                                                                ),
-                                                                child: ListTile(
-                                                                  title: Text(
-                                                                      "${data['number']}"),
-                                                                  subtitle: Text(
-                                                                      "${data['date']}"),
-                                                                  trailing:
+                                        child: Obx(
+                                          () => TabBarView(
+                                            children: <Widget>[
+                                              // ALL STATUS - VIEW
+                                              controller.onDelivery.isEmpty &
+                                                      controller
+                                                          .received.isEmpty
+                                                  ? Text(
+                                                      'No data',
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          // fontSize: 18,
+                                                          ),
+                                                    )
+                                                  : Container(
+                                                      child:
+                                                          SingleChildScrollView(
+                                                        child: Column(
+                                                          children: [
+                                                            Column(
+                                                              //All Status - received
+                                                              children:
+                                                                  controller
+                                                                      .received
+                                                                      .reversed
+                                                                      .map(
+                                                                (data) {
+                                                                  return Column(
+                                                                    children: [
                                                                       Container(
-                                                                    padding:
-                                                                        EdgeInsets.all(
-                                                                            10),
+                                                                        decoration:
+                                                                            BoxDecoration(
+                                                                          borderRadius:
+                                                                              BorderRadius.all(
+                                                                            Radius.circular(10),
+                                                                          ),
+                                                                          color:
+                                                                              Color(0xffF1FDFB),
+                                                                        ),
+                                                                        child:
+                                                                            ListTile(
+                                                                          title:
+                                                                              Text("${data['number']}"),
+                                                                          subtitle:
+                                                                              Text("${data['date']}"),
+                                                                          trailing:
+                                                                              GestureDetector(
+                                                                            onLongPress: () =>
+                                                                                controller.received.remove(data),
+                                                                            child:
+                                                                                Container(
+                                                                              padding: EdgeInsets.all(10),
+                                                                              decoration: BoxDecoration(
+                                                                                color: Color(0xff2F924B),
+                                                                                borderRadius: BorderRadius.all(
+                                                                                  Radius.circular(10),
+                                                                                ),
+                                                                              ),
+                                                                              height: 40,
+                                                                              child: Text(
+                                                                                'Received',
+                                                                                style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w500),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            10,
+                                                                      )
+                                                                    ],
+                                                                  );
+                                                                },
+                                                              ).toList(),
+                                                            ),
+                                                            //All Status - ONDELIVERY
+                                                            Column(
+                                                              children:
+                                                                  controller
+                                                                      .onDelivery
+                                                                      .reversed
+                                                                      .map(
+                                                                (data) {
+                                                                  return SingleChildScrollView(
+                                                                    child:
+                                                                        Column(
+                                                                      children: [
+                                                                        Container(
+                                                                          decoration:
+                                                                              BoxDecoration(
+                                                                            borderRadius:
+                                                                                BorderRadius.all(
+                                                                              Radius.circular(10),
+                                                                            ),
+                                                                            color:
+                                                                                Color(0xffF1FDFB),
+                                                                          ),
+                                                                          child:
+                                                                              ListTile(
+                                                                            title:
+                                                                                Text(data),
+                                                                            trailing:
+                                                                                GestureDetector(
+                                                                              onLongPress: () {
+                                                                                controller.received.add({
+                                                                                  'number': '$data',
+                                                                                  'date': '5/5/2022'
+                                                                                });
+                                                                                controller.onDelivery.remove(data);
+                                                                              },
+                                                                              child: Container(
+                                                                                padding: EdgeInsets.all(10),
+                                                                                decoration: BoxDecoration(
+                                                                                  color: Color(0xffF97B06),
+                                                                                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                                                                                ),
+                                                                                height: 40,
+                                                                                child: Text(
+                                                                                  'On Delivery',
+                                                                                  style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w500),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                        SizedBox(
+                                                                          height:
+                                                                              10,
+                                                                        )
+                                                                      ],
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              ).toList(),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                              // ONDELIVERY VIEW
+                                              controller.onDelivery.isEmpty
+                                                  ? Text(
+                                                      'No data',
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          // fontSize: 18,
+                                                          ),
+                                                    )
+                                                  : Container(
+                                                      child:
+                                                          SingleChildScrollView(
+                                                        child: Column(
+                                                          children: controller
+                                                              .onDelivery
+                                                              .reversed
+                                                              .map(
+                                                            (data) {
+                                                              return Column(
+                                                                children: [
+                                                                  Container(
                                                                     decoration:
                                                                         BoxDecoration(
-                                                                      color: Color(
-                                                                          0xff2F924B),
                                                                       borderRadius:
                                                                           BorderRadius
                                                                               .all(
                                                                         Radius.circular(
                                                                             10),
                                                                       ),
+                                                                      color: Color(
+                                                                          0xffF1FDFB),
                                                                     ),
-                                                                    height: 40,
-                                                                    child: Text(
-                                                                      'Received',
-                                                                      style: TextStyle(
-                                                                          color: Colors
-                                                                              .white,
-                                                                          fontSize:
-                                                                              15,
-                                                                          fontWeight:
-                                                                              FontWeight.w500),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                              SizedBox(
-                                                                height: 10,
-                                                              )
-                                                            ],
-                                                          );
-                                                        },
-                                                      ).toList(),
-                                                    ),
-                                                    //ONDELIVERY
-                                                    Column(
-                                                      children: onDelivery.map(
-                                                        (data) {
-                                                          return SingleChildScrollView(
-                                                            child: Column(
-                                                              children: [
-                                                                Container(
-                                                                  decoration:
-                                                                      BoxDecoration(
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .all(
-                                                                      Radius.circular(
-                                                                          10),
-                                                                    ),
-                                                                    color: Color(
-                                                                        0xffF1FDFB),
-                                                                  ),
-                                                                  child:
-                                                                      ListTile(
-                                                                    title: Text(
-                                                                        data),
-                                                                    trailing:
-                                                                        Container(
-                                                                      padding:
-                                                                          EdgeInsets.all(
-                                                                              10),
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        color: Color(
-                                                                            0xffF97B06),
-                                                                        borderRadius:
-                                                                            BorderRadius.all(Radius.circular(10)),
+                                                                    child:
+                                                                        ListTile(
+                                                                      title: Text(
+                                                                          data),
+                                                                      trailing:
+                                                                          GestureDetector(
+                                                                        onLongPress: () => controller
+                                                                            .onDelivery
+                                                                            .remove(data),
+                                                                        child:
+                                                                            Container(
+                                                                          height:
+                                                                              40,
+                                                                          padding:
+                                                                              EdgeInsets.all(10),
+                                                                          decoration:
+                                                                              BoxDecoration(
+                                                                            color:
+                                                                                Color(0xffF97B06),
+                                                                            borderRadius:
+                                                                                BorderRadius.all(Radius.circular(10)),
+                                                                          ),
+                                                                          child:
+                                                                              Text(
+                                                                            'On Delivery',
+                                                                            style: TextStyle(
+                                                                                color: Colors.white,
+                                                                                fontSize: 15,
+                                                                                fontWeight: FontWeight.w500),
+                                                                          ),
+                                                                        ),
                                                                       ),
-                                                                      height:
-                                                                          40,
-                                                                      child:
+                                                                    ),
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 10,
+                                                                  )
+                                                                ],
+                                                              );
+                                                            },
+                                                          ).toList(),
+                                                        ),
+                                                      ),
+                                                    ),
+                                              controller.received.isEmpty
+                                                  ? Text(
+                                                      'No data',
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          // fontSize: 18,
+                                                          ),
+                                                    )
+                                                  :
+                                                  //RECEIVED VIEW
+                                                  Container(
+                                                      child:
+                                                          SingleChildScrollView(
+                                                        child: Column(
+                                                          children: controller
+                                                              .received.reversed
+                                                              .map(
+                                                            (data) {
+                                                              return Column(
+                                                                children: [
+                                                                  Container(
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                      borderRadius:
+                                                                          BorderRadius
+                                                                              .all(
+                                                                        Radius.circular(
+                                                                            10),
+                                                                      ),
+                                                                      color: Color(
+                                                                          0xffF1FDFB),
+                                                                    ),
+                                                                    child:
+                                                                        ListTile(
+                                                                      title: Text(
+                                                                          "${data['number']}"),
+                                                                      subtitle:
                                                                           Text(
-                                                                        'On Delivery',
-                                                                        style: TextStyle(
-                                                                            color: Colors
-                                                                                .white,
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.w500),
+                                                                              "${data['date']}"),
+                                                                      trailing:
+                                                                          GestureDetector(
+                                                                        onLongPress: () => controller
+                                                                            .received
+                                                                            .remove(data),
+                                                                        child:
+                                                                            Container(
+                                                                          padding:
+                                                                              EdgeInsets.all(10),
+                                                                          decoration:
+                                                                              BoxDecoration(
+                                                                            color:
+                                                                                Color(0xff2F924B),
+                                                                            borderRadius:
+                                                                                BorderRadius.all(
+                                                                              Radius.circular(10),
+                                                                            ),
+                                                                          ),
+                                                                          height:
+                                                                              40,
+                                                                          child:
+                                                                              Text(
+                                                                            'Received',
+                                                                            style: TextStyle(
+                                                                                color: Colors.white,
+                                                                                fontSize: 15,
+                                                                                fontWeight: FontWeight.w500),
+                                                                          ),
+                                                                        ),
                                                                       ),
                                                                     ),
                                                                   ),
-                                                                ),
-                                                                SizedBox(
-                                                                  height: 10,
-                                                                )
-                                                              ],
-                                                            ),
-                                                          );
-                                                        },
-                                                      ).toList(),
+                                                                  SizedBox(
+                                                                    height: 10,
+                                                                  )
+                                                                ],
+                                                              );
+                                                            },
+                                                          ).toList(),
+                                                        ),
+                                                      ),
                                                     ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-
-                                            // ON DELIVERY
-                                            Container(
-                                              child: SingleChildScrollView(
-                                                child: Column(
-                                                  children: onDelivery.map(
-                                                    (data) {
-                                                      return Column(
-                                                        children: [
-                                                          Container(
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .all(
-                                                                Radius.circular(
-                                                                    10),
-                                                              ),
-                                                              color: Color(
-                                                                  0xffF1FDFB),
-                                                            ),
-                                                            child: ListTile(
-                                                              title: Text(data),
-                                                              trailing:
-                                                                  Container(
-                                                                height: 40,
-                                                                padding:
-                                                                    EdgeInsets
-                                                                        .all(
-                                                                            10),
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: Color(
-                                                                      0xffF97B06),
-                                                                  borderRadius:
-                                                                      BorderRadius.all(
-                                                                          Radius.circular(
-                                                                              10)),
-                                                                ),
-                                                                child: Text(
-                                                                  'On Delivery',
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontSize:
-                                                                          15,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          SizedBox(
-                                                            height: 10,
-                                                          )
-                                                        ],
-                                                      );
-                                                    },
-                                                  ).toList(),
-                                                ),
-                                              ),
-                                            ),
-
-                                            // RECEIVED
-                                            Container(
-                                              child: SingleChildScrollView(
-                                                child: Column(
-                                                  children: received.map(
-                                                    (data) {
-                                                      return Column(
-                                                        children: [
-                                                          Container(
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .all(
-                                                                Radius.circular(
-                                                                    10),
-                                                              ),
-                                                              color: Color(
-                                                                  0xffF1FDFB),
-                                                            ),
-                                                            child: ListTile(
-                                                              title: Text(
-                                                                  "${data['number']}"),
-                                                              subtitle: Text(
-                                                                  "${data['date']}"),
-                                                              trailing:
-                                                                  Container(
-                                                                padding:
-                                                                    EdgeInsets
-                                                                        .all(
-                                                                            10),
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: Color(
-                                                                      0xff2F924B),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .all(
-                                                                    Radius
-                                                                        .circular(
-                                                                            10),
-                                                                  ),
-                                                                ),
-                                                                height: 40,
-                                                                child: Text(
-                                                                  'Received',
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontSize:
-                                                                          15,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          SizedBox(
-                                                            height: 10,
-                                                          )
-                                                        ],
-                                                      );
-                                                    },
-                                                  ).toList(),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
-                                      )
+                                      ),
                                     ],
                                   ),
                                 ),

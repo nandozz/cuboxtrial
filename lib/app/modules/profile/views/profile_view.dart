@@ -1,3 +1,4 @@
+import 'package:cubox/app/modules/home/controllers/home_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -5,6 +6,7 @@ import 'package:get/get.dart';
 import '../controllers/profile_controller.dart';
 
 class ProfileView extends GetView<ProfileController> {
+  final HomeController homeController = Get.find<HomeController>();
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -51,7 +53,7 @@ class ProfileView extends GetView<ProfileController> {
                   // left: 112,
                   // top: 24,
                   child: GestureDetector(
-                    onTap: () => Get.back(),
+                    onTap: () {},
                     child: Image.asset('assets/icons/cubox-icon.png'),
                   ),
                 ),
@@ -87,171 +89,192 @@ class ProfileView extends GetView<ProfileController> {
                             fontWeight: FontWeight.w500),
                       ),
                       SizedBox(height: 20),
-                      Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Column(
-                              children: [
-                                Image.asset('assets/images/cubox-lock.png'),
-                                Row(
-                                  children: [
-                                    TextButton(
-                                        onPressed: () {},
-                                        child: Text(
-                                          'Reset',
-                                          style: TextStyle(color: Colors.red),
-                                        )),
-                                    TextButton(
-                                        onPressed: () {},
-                                        child: Text('Restart')),
-                                  ],
-                                )
-                              ],
-                            ),
-                            SizedBox(width: 30),
-                            Container(
-                              width: size.width * .5,
-                              child: Column(
+                      Obx(
+                        () => Container(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Column(
                                 children: [
+                                  GestureDetector(
+                                      onTap: () {
+                                        // print('Box Open');
+                                      },
+                                      child: Image.asset(
+                                          'assets/images/cubox-lock.png')),
+                                  SizedBox(height: 15),
                                   Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    // crossAxisAlignment: CrossAxisAlignment.start,
+                                        MainAxisAlignment.spaceAround,
                                     children: [
-                                      Container(
-                                        padding: EdgeInsets.all(10),
-                                        height: 40,
-                                        decoration: BoxDecoration(
-                                          color: Color(0xff2F924B),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                        ),
-                                        child: Text(
-                                          'Received',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ),
-                                      // SizedBox(width: 50),
-                                      Text.rich(
-                                        TextSpan(
-                                          text: '10',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                            color: Color(0xff136A5A),
-                                          ),
-                                          children: [
-                                            TextSpan(
-                                              text: '/10',
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.normal,
-                                                color: Color(0xff5C5C5C),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
+                                      TextButton(
+                                          onPressed: () {},
+                                          child: Text(
+                                            'Reset',
+                                            style: TextStyle(color: Colors.red),
+                                          )),
+                                      TextButton(
+                                          onPressed: () {},
+                                          child: Text('Restart')),
                                     ],
-                                  ),
-                                  SizedBox(height: 10),
-                                  Container(
-                                    padding: EdgeInsets.all(10),
-                                    height: 40,
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                      color: Colors.red,
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                    ),
-                                    child: Text(
-                                      'Clear',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 10),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    // crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        padding: EdgeInsets.all(10),
-                                        height: 40,
-                                        decoration: BoxDecoration(
-                                          color: Color(0xffF97B06),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                        ),
-                                        child: Text(
-                                          'On Delivery',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ),
-                                      // SizedBox(width: 50),
-                                      Text.rich(
-                                        TextSpan(
-                                          text: '7',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                            color: Color(0xffF97B06),
-                                          ),
-                                          children: [
-                                            TextSpan(
-                                              text: '/10',
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.normal,
-                                                color: Color(0xff5C5C5C),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 10),
-                                  Container(
-                                    padding: EdgeInsets.all(10),
-                                    height: 40,
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                      color: Colors.red,
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                    ),
-                                    child: Text(
-                                      'Clear',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
+                                  )
                                 ],
                               ),
-                            )
-                          ],
+                              // SizedBox(width: 10),
+                              Container(
+                                width: size.width * .5,
+                                child: Column(
+                                  children: [
+                                    //RECEIVED CLEAR
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      // crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.all(10),
+                                          height: 40,
+                                          decoration: BoxDecoration(
+                                            color: Color(0xff2F924B),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10)),
+                                          ),
+                                          child: Text(
+                                            'Received',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                        // SizedBox(width: 50),
+                                        Text.rich(
+                                          TextSpan(
+                                            text: homeController.received.length
+                                                .toString(),
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: Color(0xff136A5A),
+                                            ),
+                                            children: [
+                                              TextSpan(
+                                                text: '/10',
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.normal,
+                                                  color: Color(0xff5C5C5C),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 10),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        // print('Received was cleared');
+                                        homeController.received.clear();
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Colors.red,
+                                        minimumSize: Size(double.infinity, 40),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              new BorderRadius.circular(10.0),
+                                        ),
+                                      ),
+                                      child: Text(
+                                        'Clear',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: 10),
+                                    //ONDELIVERY CLEAR
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      // crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.all(10),
+                                          height: 40,
+                                          decoration: BoxDecoration(
+                                            color: Color(0xffF97B06),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10)),
+                                          ),
+                                          child: Text(
+                                            'On Delivery',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                        // SizedBox(width: 50),
+                                        Text.rich(
+                                          TextSpan(
+                                            text: homeController
+                                                .onDelivery.length
+                                                .toString(),
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: Color(0xffF97B06),
+                                            ),
+                                            children: [
+                                              TextSpan(
+                                                text: '/10',
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.normal,
+                                                  color: Color(0xff5C5C5C),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 10),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        // print('onDelivery was cleared');
+                                        homeController.onDelivery.clear();
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Colors.red,
+                                        minimumSize: Size(double.infinity, 40),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              new BorderRadius.circular(10.0),
+                                        ),
+                                      ),
+                                      child: Text(
+                                        'Clear',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ],

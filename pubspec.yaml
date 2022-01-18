@@ -2,20 +2,21 @@ name: cubox
 version: 1.0.0+1
 publish_to: none
 description: A new Flutter project.
-environment: 
+environment:
   sdk: '>=2.12.0 <3.0.0'
 
-dependencies: 
+dependencies:
   cupertino_icons: ^1.0.2
+  flutter:
+    sdk: flutter
   get: 4.6.1
-  flutter: 
+  intl: ^0.17.0
+
+dev_dependencies:
+  flutter_test:
     sdk: flutter
 
-dev_dependencies: 
-  flutter_test: 
-    sdk: flutter
-
-flutter: 
+flutter:
   uses-material-design: true
   assets:
     # - assets/images
@@ -23,3 +24,4 @@ flutter:
     - assets/images/cubox-lock.png
     - assets/icons/logout.png
     - assets/icons/cubox-icon.png
+    - assets/images/splash-image.png
