@@ -50,6 +50,7 @@ class ProfileView extends GetView<ProfileController> {
                       Future.delayed(
                         const Duration(seconds: 2),
                         () {
+                          homeController.manager.disconnect();
                           // manager.disconnect();
                         },
                       );
