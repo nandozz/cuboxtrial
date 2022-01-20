@@ -1,5 +1,5 @@
-// import 'dart:ffi';
-
+import 'package:cubox/app/data/MQTTAppState.dart';
+import 'package:cubox/app/data/MQTTManager.dart';
 import 'package:cubox/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 
@@ -10,19 +10,16 @@ import '../controllers/login_controller.dart';
 // ignore: must_be_immutable
 class LoginView extends GetView<LoginController> {
   final TextEditingController _cuboxIDTextController = TextEditingController();
-  final TextEditingController _cuboxPassTextController =
+  final TextEditingController _cuboxAccKeyTextController =
       TextEditingController();
 
-  // bool isHiddenPass = true;
+  late MQTTAppState currentAppState;
+  late MQTTManager manager;
 
   @override
   Widget build(BuildContext context) {
-    // LoginController controller = Get.put(LoginController());
-    Get.lazyPut<LoginController>(
-      () => LoginController(),
-    );
-
     final size = MediaQuery.of(context).size;
+
     // final statusBar = MediaQuery.of(context).padding.top;
     return Scaffold(
       backgroundColor: Color(0xFF7BD2C3),
@@ -79,7 +76,7 @@ class LoginView extends GetView<LoginController> {
                           style:
                               TextStyle(fontSize: 15, color: Color(0xff136A5A)),
                           enabled: true,
-                          controller: _cuboxPassTextController,
+                          controller: _cuboxAccKeyTextController,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderSide: BorderSide.none,
@@ -109,8 +106,20 @@ class LoginView extends GetView<LoginController> {
                 const SizedBox(height: 50),
                 ElevatedButton(
                   onPressed: () {
-                    // print('Login');
-                    Get.toNamed(Routes.HOME);
+                    if (_cuboxIDTextController.text.isNotEmpty &&
+                        _cuboxAccKeyTextController.text.isNotEmpty) {
+                      controller.cubox_ID = _cuboxIDTextController.text;
+                      controller.access_Key = _cuboxAccKeyTextController.text;
+                      print('${controller.cuboxID},${controller.accessKey} ');
+                      Get.toNamed(Routes.HOME);
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                              'Please check your cubox ID and Access Key!'),
+                        ),
+                      );
+                    }
                   },
                   child: Text('Login'),
                   style: ElevatedButton.styleFrom(
