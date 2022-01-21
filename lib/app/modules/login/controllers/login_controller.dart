@@ -75,9 +75,6 @@ class LoginController extends GetxController {
   }
 
   void addtodbList(List data) {
-    //    list = List.from(list)..addAll(['2','6']);
-    // list = list.toSet().toList();
-
     _dbList.value = List.from(_dbList)..addAll(data);
     _dbList.value = _dbList.toSet().toList();
 

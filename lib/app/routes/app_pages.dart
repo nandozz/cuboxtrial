@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/courier/bindings/courier_binding.dart';
+import '../modules/courier/views/courier_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
@@ -44,6 +46,11 @@ class AppPages {
       name: _Paths.SPLASH,
       page: () => SplashView(),
       binding: SplashBinding(),
+    ),
+    GetPage(
+      name: _Paths.COURIER,
+      page: () => CourierView(),
+      binding: CourierBinding(),
     ),
   ];
 }

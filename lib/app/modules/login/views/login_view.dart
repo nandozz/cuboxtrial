@@ -22,35 +22,77 @@ class LoginView extends GetView<LoginController> {
 
     // final statusBar = MediaQuery.of(context).padding.top;
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Color(0xFF7BD2C3),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Get.toNamed(Routes.COURIER);
+            },
+            icon: Icon(
+              Icons.qr_code_scanner_rounded,
+              color: Color(0xff136A5A),
+              size: 35,
+            ),
+          ),
+          SizedBox(
+            width: 10,
+          )
+        ],
+      ),
       backgroundColor: Color(0xFF7BD2C3),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.only(top: 50),
+            padding: const EdgeInsets.symmetric(horizontal: 50),
             child: Column(
               children: [
                 Image.asset('assets/images/cubox.png'),
                 SizedBox(
                   height: 50,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 50),
-                  // padding: const EdgeInsets.fromLTRB(50, 50, 50, 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'cubox ID',
-                        style: TextStyle(color: Colors.white, fontSize: 18),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'cubox ID',
+                      style: TextStyle(color: Color(0xff136A5A), fontSize: 18),
+                    ),
+                    const SizedBox(height: 10),
+                    TextField(
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 15, color: Color(0xff136A5A)),
+                      enabled: true,
+                      controller: _cuboxIDTextController,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        contentPadding: const EdgeInsets.only(
+                            left: 10, bottom: 0, top: 0, right: 0),
                       ),
-                      const SizedBox(height: 10),
-                      TextField(
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      'Access Key',
+                      style: TextStyle(color: Color(0xff136A5A), fontSize: 18),
+                    ),
+                    const SizedBox(height: 10),
+                    Obx(
+                      () => TextField(
+                        obscureText: controller.isHiddenPass.value,
                         textAlign: TextAlign.center,
                         style:
                             TextStyle(fontSize: 15, color: Color(0xff136A5A)),
                         enabled: true,
-                        controller: _cuboxIDTextController,
-                        decoration: const InputDecoration(
+                        controller: _cuboxAccKeyTextController,
+                        decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderSide: BorderSide.none,
                             borderRadius: BorderRadius.all(
@@ -60,48 +102,20 @@ class LoginView extends GetView<LoginController> {
                           filled: true,
                           fillColor: Colors.white,
                           contentPadding: const EdgeInsets.only(
-                              left: 10, bottom: 0, top: 0, right: 0),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      Text(
-                        'Access Key',
-                        style: TextStyle(color: Colors.white, fontSize: 18),
-                      ),
-                      const SizedBox(height: 10),
-                      Obx(
-                        () => TextField(
-                          obscureText: controller.isHiddenPass.value,
-                          textAlign: TextAlign.center,
-                          style:
-                              TextStyle(fontSize: 15, color: Color(0xff136A5A)),
-                          enabled: true,
-                          controller: _cuboxAccKeyTextController,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                            filled: true,
-                            fillColor: Colors.white,
-                            contentPadding: const EdgeInsets.only(
-                                left: 50, bottom: 0, top: 0, right: 0),
-                            suffixIcon: IconButton(
-                              onPressed: () => controller.isHiddenPass.toggle(),
-                              color: Color(0xff136A5A),
-                              icon: Icon(
-                                controller.isHiddenPass.value
-                                    ? Icons.visibility_off
-                                    : Icons.visibility,
-                              ),
+                              left: 50, bottom: 0, top: 0, right: 0),
+                          suffixIcon: IconButton(
+                            onPressed: () => controller.isHiddenPass.toggle(),
+                            color: Color(0xff136A5A),
+                            icon: Icon(
+                              controller.isHiddenPass.value
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
                             ),
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 50),
                 ElevatedButton(
@@ -135,58 +149,51 @@ class LoginView extends GetView<LoginController> {
                           TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                 ),
                 SizedBox(height: 35),
-                Padding(
-                  padding: const EdgeInsets.only(left: 50),
-                  child: Row(
-                    children: [
-                      Text('Can\'t login? '),
-                      Text(
-                        'Register Here',
+                Row(
+                  children: [
+                    Text('Can\'t login?'),
+                    TextButton(
+                      onPressed: () {},
+                      style: TextButton.styleFrom(primary: Colors.white),
+                      child: Text(
+                        'Register here',
                         style: TextStyle(color: Color(0xff136A5A)),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
 
-                SizedBox(height: size.height * .15), //size.height * .20
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 50),
-                  color: Color(0xFF7BD2C3),
-                  height: size.height * .1,
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // print('Courier ${size.height}');
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Courier',
-                          style: TextStyle(
-                            color: Color(0xff136A5A),
-                          ),
-                        ),
-                        SizedBox(width: 15),
-                        Icon(
-                          Icons.qr_code,
-                          color: Color(0xff136A5A),
-                        )
-                      ],
-                    ),
-                    style: ElevatedButton.styleFrom(
-                        side: BorderSide(color: Color(0xff136A5A), width: 3),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(35),
-                          ),
-                        ),
-                        primary: Colors.white,
-                        padding: EdgeInsets.symmetric(horizontal: 35),
-                        textStyle: TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.bold)),
-                  ),
-                ),
+                SizedBox(height: size.height * .1), //size.height * .20
+                // Text('want to put something?'),
+                // SizedBox(height: 10), //size.height * .20
+                // IconButton(
+                //   onPressed: () {},
+                //   icon: Icon(
+                //     Icons.qr_code_scanner_rounded,
+                //     color: Color(0xff136A5A),
+                //     size: 35,
+                //   ),
+                // ),
+                // ElevatedButton(
+                //   onPressed: () {
+                //     // print('Courier ${size.height}');
+                //   },
+                //   child: Icon(
+                //     Icons.qr_code_scanner_rounded,
+                //     color: Color(0xff136A5A),
+                //     size: 35,
+                //   ),
+                //   style: ElevatedButton.styleFrom(
+                //     side: BorderSide(color: Color(0xff136A5A), width: 3),
+                //     shape: RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.all(
+                //         Radius.circular(15),
+                //       ),
+                //     ),
+                //     primary: Color(0xFF7BD2C3),
+                //     padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                //   ),
+                // ),
               ],
             ),
           ),

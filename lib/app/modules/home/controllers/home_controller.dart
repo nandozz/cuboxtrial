@@ -1,19 +1,8 @@
+import 'package:cubox/app/data/MQTTManager.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
-  // ignore: todo
-  // TODO: Implement HomeController
-  // RxList onDelivery = [].obs;
-  // RxList received = [
-  //   // {
-  //   //   'number': 'AAAAAAAAA',
-  //   //   'date': '1/1/2022',
-  //   // },
-  //   // {
-  //   //   'number': 'BBBBB',
-  //   //   'date': '1/1/2022',
-  //   // },
-  // ].obs;
+  late MQTTManager manager;
 
   RxInt selectedIndex = 0.obs; //New = 0.obs;
   final close = true.obs;

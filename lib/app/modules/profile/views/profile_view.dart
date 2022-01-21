@@ -119,21 +119,23 @@ class ProfileView extends GetView<ProfileController> {
                               Column(
                                 children: [
                                   GestureDetector(
-                                      onTap: () {
-                                        homeController.close.toggle();
-                                        // print('Box Open');
-                                      },
-                                      child: Container(
-                                          width: 144,
-                                          height: 144,
-                                          child: FittedBox(
-                                            fit: BoxFit.fill,
-                                            child: homeController.close.value
-                                                ? Image.asset(
-                                                    'assets/images/cubox-lock-big.png')
-                                                : Image.asset(
-                                                    'assets/images/cubox-unlock.png'),
-                                          ))),
+                                    onTap: () {
+                                      homeController.close.toggle();
+                                      // print('Box Open');
+                                    },
+                                    child: Container(
+                                      width: 144,
+                                      height: 144,
+                                      child: FittedBox(
+                                        fit: BoxFit.fill,
+                                        child: homeController.close.value
+                                            ? Image.asset(
+                                                'assets/images/cubox-lock-big.png')
+                                            : Image.asset(
+                                                'assets/images/cubox-unlock.png'),
+                                      ),
+                                    ),
+                                  ),
                                   SizedBox(height: 15),
                                   Row(
                                     mainAxisAlignment:

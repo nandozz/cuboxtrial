@@ -9,6 +9,7 @@ abstract class Routes {
   static const SCANNING = _Paths.SCANNING;
   static const PROFILE = _Paths.PROFILE;
   static const SPLASH = _Paths.SPLASH;
+  static const COURIER = _Paths.COURIER;
 }
 
 abstract class _Paths {
@@ -17,4 +18,5 @@ abstract class _Paths {
   static const SCANNING = '/scanning';
   static const PROFILE = '/profile';
   static const SPLASH = '/splash';
+  static const COURIER = '/courier';
 }

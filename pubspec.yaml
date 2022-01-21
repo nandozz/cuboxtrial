@@ -9,6 +9,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
+  flutter_barcode_scanner: ^2.0.0
   get: 4.6.1
   intl: ^0.17.0
   mqtt_client: ^9.6.5
@@ -27,5 +28,7 @@ flutter:
     - assets/images/cubox-lock-big.png
     - assets/images/cubox-unlock.png
     - assets/images/splash-image.png
+    - assets/images/cubox-scanning.png
+    - assets/images/parcel-scanning.png
     - assets/icons/logout.png
     - assets/icons/cubox-icon.png
