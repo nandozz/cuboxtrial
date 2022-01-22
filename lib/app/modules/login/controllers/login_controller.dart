@@ -47,7 +47,10 @@ class LoginController extends GetxController {
       _onDelivery.removeAt(0);
       addtodbList(_onDelivery);
       // _updateList.value = text;
-    } else if (text.contains('listempty')) {
+    }
+    if (text.contains('listempty')) {
+      _dbList.clear();
+      print('clear onDelivery nih');
       _updateList.value = '';
     }
 
@@ -58,6 +61,7 @@ class LoginController extends GetxController {
       // _justReceived.removeLast();
       // _justReceived.removeAt(0);
       // print("nih 'number': '${_justReceived[1]}', 'date': '${_dateTime}'");
+      _dbList.remove(_justReceived[1]);
 
       addtoReceived({'number': '${_justReceived[1]}', 'date': '${_dateTime}'});
 
@@ -65,7 +69,9 @@ class LoginController extends GetxController {
       // print('nih received: ${_received[0]}');
 
       // _historyText.value = text;
-    } else if (text.contains('historyempty')) {
+    }
+    if (text.contains('historyempty')) {
+      _received.clear();
       _historyText.value = '';
     } else if (text.contains('Open')) {
       _isLock.value = false;
