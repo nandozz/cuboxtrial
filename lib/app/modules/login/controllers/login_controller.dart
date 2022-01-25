@@ -38,6 +38,11 @@ class LoginController extends GetxController {
     if (text.contains('connected')) {
       _connection.value = 'Connected';
     }
+    if (text.contains('listempty')) {
+      _dbList.clear();
+      print('clear onDelivery nih');
+      _updateList.value = '';
+    }
 
     if (text.contains('List')) {
       // _updateList = text.substring(5, text.length);
@@ -47,11 +52,6 @@ class LoginController extends GetxController {
       _onDelivery.removeAt(0);
       addtodbList(_onDelivery);
       // _updateList.value = text;
-    }
-    if (text.contains('listempty')) {
-      _dbList.clear();
-      print('clear onDelivery nih');
-      _updateList.value = '';
     }
 
     if (text.contains('JustReceived')) {
@@ -64,8 +64,7 @@ class LoginController extends GetxController {
       _dbList.remove(_justReceived[1]);
 
       addtoReceived({'number': '${_justReceived[1]}', 'date': '${_dateTime}'});
-
-      // addtoReceived(Map() );
+      _dbList.remove('${_justReceived[1]}');
       // print('nih received: ${_received[0]}');
 
       // _historyText.value = text;

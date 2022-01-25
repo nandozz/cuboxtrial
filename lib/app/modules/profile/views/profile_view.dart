@@ -14,9 +14,71 @@ class ProfileView extends GetView<ProfileController> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Scaffold(
-      backgroundColor: Colors.lightBlue[50],
-      body: Stack(
+
+    Future<bool?> showWarning(BuildContext context) async => showDialog<bool>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            title: const Text('Logout?'),
+            // ignore: always_specify_types
+            actions: [
+              TextButton(
+                style: TextButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                  ),
+                  primary: Color(0xff136A5A),
+                  side: BorderSide(
+                    color: Color(0xff136A5A),
+                    width: 2,
+                  ),
+                ),
+                onPressed: () => Navigator.pop(context, false),
+                child: Text('No'),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                  ),
+                  primary: Color(0xff136A5A),
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  textStyle:
+                      TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                child: const Text('Yes'),
+                onPressed: () {
+                  // currentAppState.setReceivedText('listempty');
+                  // currentAppState.setReceivedText('historyempty');
+                  // controller.manager.disconnect();
+                  print('Back button in HOME pressed!');
+                  Future.delayed(
+                    const Duration(seconds: 2),
+                    () {
+                      homeController.manager.disconnect();
+                    },
+                  );
+
+                  loginController.setReceivedText('');
+                  loginController.cubox_ID = '';
+                  loginController.access_Key = '';
+                  // Get.offAllNamed(Routes.LOGIN);
+                  return Navigator.pop(context, true);
+                },
+              ),
+            ],
+          ),
+        );
+    return WillPopScope(
+      onWillPop: () async {
+        final bool? shouldPop = await showWarning(context);
+
+        return shouldPop ?? false;
+      },
+      child: Stack(
         children: [
           Container(
             padding: EdgeInsets.only(top: 75),
@@ -46,19 +108,24 @@ class ProfileView extends GetView<ProfileController> {
                   // left: 12,
                   // top: 24,
                   child: GestureDetector(
-                    onTap: () {
-                      Future.delayed(
-                        const Duration(seconds: 2),
-                        () {
-                          homeController.manager.disconnect();
-                          // manager.disconnect();
-                        },
-                      );
+                    onTap: () async {
+                      bool? shouldPop = false;
 
-                      loginController.setReceivedText('');
-                      loginController.cubox_ID = '';
-                      loginController.access_Key = '';
-                      Get.offAllNamed(Routes.LOGIN);
+                      shouldPop = await showWarning(context);
+
+                      if (shouldPop!) {
+                        Future.delayed(
+                          const Duration(seconds: 2),
+                          () {
+                            homeController.manager.disconnect();
+                          },
+                        );
+
+                        loginController.setReceivedText('');
+                        loginController.cubox_ID = '';
+                        loginController.access_Key = '';
+                        Get.offAllNamed(Routes.LOGIN);
+                      }
                     },
                     child: Image.asset('assets/icons/logout.png'),
                   ),
@@ -120,6 +187,11 @@ class ProfileView extends GetView<ProfileController> {
                                 children: [
                                   GestureDetector(
                                     onTap: () {
+                                      homeController.close.value
+                                          ? homeController.publishMessage(
+                                              '${loginController.accessKey} open')
+                                          : homeController.publishMessage(
+                                              '${loginController.accessKey} close');
                                       homeController.close.toggle();
                                       // print('Box Open');
                                     },
@@ -142,13 +214,19 @@ class ProfileView extends GetView<ProfileController> {
                                         MainAxisAlignment.spaceAround,
                                     children: [
                                       TextButton(
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            homeController.publishMessage(
+                                                '${loginController.accessKey} reset');
+                                          },
                                           child: Text(
                                             'Reset',
                                             style: TextStyle(color: Colors.red),
                                           )),
                                       TextButton(
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            homeController.publishMessage(
+                                                '${loginController.accessKey} restart');
+                                          },
                                           child: Text('Restart')),
                                     ],
                                   )
@@ -220,6 +298,8 @@ class ProfileView extends GetView<ProfileController> {
                                             onPressed: () {
                                               // print('Received was cleared');
                                               loginController.received.clear();
+                                              homeController.publishMessage(
+                                                  '${loginController.accessKey} clearhis');
                                             },
                                             style: ElevatedButton.styleFrom(
                                               primary: Colors.red,
@@ -295,6 +375,8 @@ class ProfileView extends GetView<ProfileController> {
                                             onPressed: () {
                                               // print('dbList was cleared');
                                               loginController.dbList.clear();
+                                              homeController.publishMessage(
+                                                  '${loginController.accessKey} clearlist');
                                             },
                                             style: ElevatedButton.styleFrom(
                                               primary: Colors.red,

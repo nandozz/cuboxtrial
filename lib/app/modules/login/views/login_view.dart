@@ -1,4 +1,3 @@
-import 'package:cubox/app/data/MQTTAppState.dart';
 import 'package:cubox/app/data/MQTTManager.dart';
 import 'package:cubox/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +12,6 @@ class LoginView extends GetView<LoginController> {
   final TextEditingController _cuboxAccKeyTextController =
       TextEditingController();
 
-  late MQTTAppState currentAppState;
   late MQTTManager manager;
 
   @override
@@ -137,16 +135,16 @@ class LoginView extends GetView<LoginController> {
                   },
                   child: Text('Login'),
                   style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
                       ),
-                      primary: Color(0xff136A5A),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 35, vertical: 10),
-                      textStyle:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                    ),
+                    primary: Color(0xff136A5A),
+                    padding: EdgeInsets.symmetric(horizontal: 35, vertical: 10),
+                    textStyle:
+                        TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
                 ),
                 SizedBox(height: 35),
                 Row(

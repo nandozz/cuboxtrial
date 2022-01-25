@@ -4,9 +4,7 @@
 // import 'dart:ui';
 
 import 'dart:async';
-import 'dart:math';
 
-import 'package:cubox/app/data/MQTTManager.dart';
 import 'package:cubox/app/modules/login/controllers/login_controller.dart';
 import 'package:cubox/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
@@ -34,40 +32,6 @@ class HomeView extends GetView<HomeController> {
   //   }
   // }
 
-  void _publishMessage(String text) {
-    // String osPrefix = 'Flutter_iOS';
-    // if (Platform.isAndroid) {
-    //   osPrefix = 'Flutter_Android';
-    // }
-    final String message = text;
-    controller.manager.publish(message);
-    // _newCodeTextController.clear();
-  }
-
-  void _configureAndConnect(String id, String key) {
-    final Random random = Random();
-    final int randomNumber = random.nextInt(100); // from 0 upto 99 included
-    String osPrefix = 'cubox_User$randomNumber';
-
-    final String _topic = 'BokuBox/$key/$id';
-    controller.manager = MQTTManager(
-        host: 'broker.hivemq.com',
-        // topic: who == 'user' ? _topic : _topiccourier,
-        topic: _topic,
-        identifier: osPrefix,
-        state: loginController);
-    controller.manager.initializeMQTTClient();
-    controller.manager.connect();
-    // ignore: always_specify_types
-    // Future.delayed(
-    //   Duration.zero,
-    //   () {
-    //     controller.manager.initializeMQTTClient();
-    //     controller.manager.connect();
-    //   },
-    // );
-  }
-
   @override
   Widget build(BuildContext context) {
     // int _selectedIndex = 0; //New
@@ -76,20 +40,43 @@ class HomeView extends GetView<HomeController> {
     Future<bool?> showWarning(BuildContext context) async => showDialog<bool>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
-            title: const Text('Do you want to Logout?'),
+            title: const Text('Logout?'),
             // ignore: always_specify_types
             actions: [
-              ElevatedButton(
-                child: const Text('No'),
+              TextButton(
+                style: TextButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                  ),
+                  primary: Color(0xff136A5A),
+                  side: BorderSide(
+                    color: Color(0xff136A5A),
+                    width: 2,
+                  ),
+                ),
                 onPressed: () => Navigator.pop(context, false),
+                child: Text('No'),
               ),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                  ),
+                  primary: Color(0xff136A5A),
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  textStyle:
+                      TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
                 child: const Text('Yes'),
                 onPressed: () {
                   // currentAppState.setReceivedText('listempty');
                   // currentAppState.setReceivedText('historyempty');
                   // controller.manager.disconnect();
-
+                  print('Back button in HOME pressed!');
                   Future.delayed(
                     const Duration(seconds: 2),
                     () {
@@ -110,20 +97,23 @@ class HomeView extends GetView<HomeController> {
 
     return GetBuilder<HomeController>(
       initState: (state) {
-        _configureAndConnect(
+        controller.configureAndConnect(
             loginController.cuboxID, loginController.accessKey);
 
         Future.delayed(
-          const Duration(seconds: 2),
+          const Duration(seconds: 3),
           () {
-            // 5 seconds over, navigate to Page2.
-            _publishMessage('${loginController.accessKey} ping');
+            loginController.getAppConnectionState ==
+                    MQTTAppConnectionState.disconnected
+                ? controller.configureAndConnect(
+                    loginController.cuboxID, loginController.accessKey)
+                : controller
+                    .publishMessage('${loginController.accessKey} ping');
           },
         );
       },
       builder: (controller) => WillPopScope(
         onWillPop: () async {
-          print('Back button pressed!');
           final bool? shouldPop = await showWarning(context);
 
           return shouldPop ?? false;
@@ -318,6 +308,7 @@ class HomeView extends GetView<HomeController> {
                                             ),
                                           ),
                                         ),
+                                        //Add button
                                         IconButton(
                                           onPressed: () {
                                             if (_noResiTextController
@@ -325,15 +316,15 @@ class HomeView extends GetView<HomeController> {
                                                 loginController
                                                         .getConnectionStatus ==
                                                     'Not-Connected') {
-                                              _publishMessage(
+                                              controller.publishMessage(
                                                   '${loginController.accessKey} ping');
                                             } else {
-                                              _publishMessage(
+                                              controller.publishMessage(
                                                   '${loginController.accessKey} add ${_noResiTextController.text}');
                                               //ADD
-                                              loginController.addtodbList([
-                                                '${_noResiTextController.text}'
-                                              ]);
+                                              // loginController.addtodbList([
+                                              //   '${_noResiTextController.text}'
+                                              // ]);
 
                                               _noResiTextController.clear();
                                             }
@@ -425,7 +416,10 @@ class HomeView extends GetView<HomeController> {
                                                                                 title: Text("${data['number']}"),
                                                                                 subtitle: Text("${data['date']}"),
                                                                                 trailing: GestureDetector(
-                                                                                  onLongPress: () => loginController.received.remove(data),
+                                                                                  onLongPress: () {
+                                                                                    //All Status - received list
+                                                                                    loginController.received.remove(data);
+                                                                                  },
                                                                                   child: Container(
                                                                                     padding: EdgeInsets.all(10),
                                                                                     decoration: BoxDecoration(
@@ -473,15 +467,22 @@ class HomeView extends GetView<HomeController> {
                                                                                   title: Text(data),
                                                                                   trailing: GestureDetector(
                                                                                     onLongPress: () {
+                                                                                      //All Status - onDelivery list
                                                                                       // print('nih longpress Allstatus');
                                                                                       // print('nih ${loginController.dateTime}');
-                                                                                      loginController.dateNow();
-                                                                                      loginController.addtoReceived({
-                                                                                        'number': '$data',
-                                                                                        'date': '${loginController.dateTime}'
-                                                                                        // 'date': '5/5/2222'
-                                                                                      });
-                                                                                      loginController.dbList.remove(data);
+                                                                                      // loginController.dateNow();
+                                                                                      // loginController.addtoReceived({
+                                                                                      //   'number': '$data',
+                                                                                      //   'date': '${loginController.dateTime}'
+                                                                                      //   // 'date': '5/5/2222'
+                                                                                      // });
+                                                                                      // loginController.dbList.remove(data);
+                                                                                      controller.publishMessage('courier $data');
+                                                                                      ScaffoldMessenger.of(context).showSnackBar(
+                                                                                        SnackBar(
+                                                                                          content: Text('Switch to received. Please wait'),
+                                                                                        ),
+                                                                                      );
                                                                                     },
                                                                                     child: Container(
                                                                                       padding: EdgeInsets.all(10),
@@ -512,7 +513,7 @@ class HomeView extends GetView<HomeController> {
                                                             ),
                                                           ),
                                                         ),
-                                                  // dbList VIEW
+                                                  //onDelivery - VIEW
                                                   loginController.dbList.isEmpty
                                                       ? Text(
                                                           'No data',
@@ -550,8 +551,16 @@ class HomeView extends GetView<HomeController> {
                                                                               Text(data),
                                                                           trailing:
                                                                               GestureDetector(
-                                                                            onLongPress: () =>
-                                                                                loginController.dbList.remove(data),
+                                                                            onLongPress:
+                                                                                () {
+                                                                              // loginController.dbList.remove(data);
+                                                                              controller.publishMessage('courier $data');
+                                                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                                                SnackBar(
+                                                                                  content: Text('Switch to received. Please wait'),
+                                                                                ),
+                                                                              );
+                                                                            },
                                                                             child:
                                                                                 Container(
                                                                               height: 40,
