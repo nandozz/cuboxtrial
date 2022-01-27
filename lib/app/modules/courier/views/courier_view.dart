@@ -24,29 +24,6 @@ class CourierView extends GetView<CourierController> {
       TextEditingController();
   LoginController loginController = Get.find<LoginController>();
 
-  Future<bool?> showWarning(BuildContext context) async => showDialog<bool>(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          title: const Text('Do you want to Logout?'),
-          // ignore: always_specify_types
-          actions: [
-            ElevatedButton(
-              child: const Text('No'),
-              onPressed: () => Navigator.pop(context, false),
-            ),
-            ElevatedButton(
-              child: const Text('Yes'),
-              onPressed: () {
-                // currentAppState.setReceivedText('listempty');
-                // currentAppState.setReceivedText('historyempty');
-                controller.manager.disconnect();
-                return Navigator.pop(context, true);
-              },
-            ),
-          ],
-        ),
-      );
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -87,10 +64,9 @@ class CourierView extends GetView<CourierController> {
                         child: FittedBox(
                           fit: BoxFit.fill,
                           child: controller.qrcode.value
-                              ? Image.asset(
-                                  'assets/images/cubox-scanning.png') //scan QR
-                              : Image.asset(
-                                  'assets/images/parcel-scanning.png'), //scan Barcode
+                              ? Image.asset('assets/images/cubox-scanning.png')
+                              : //scan Barcode
+                              Image.asset('assets/images/parcel-scanning.png'),
                         ),
                       ),
                       // Container(
@@ -131,7 +107,7 @@ class CourierView extends GetView<CourierController> {
                             );
                           } else if (loginController.getAppConnectionState ==
                               MQTTAppConnectionState.connected) {
-                            controller.qrcode.toggle();
+                            controller.setimage = false;
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text('scan your barcode resi'),
@@ -180,91 +156,120 @@ class CourierView extends GetView<CourierController> {
                   // _buildTextFiedScan(
                   //     _qrcuboxIDTextController, 'type or scan QR cubox'),
                   const SizedBox(height: 20),
-                  Text(
-                    'Access Key',
-                    style: TextStyle(color: Color(0xff136A5A), fontSize: 18),
-                  ),
-                  const SizedBox(height: 10),
-                  TextField(
-                    textInputAction: TextInputAction.next,
-                    controller: _barcodeAccKeyTextController,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Access Key',
+                        style:
+                            TextStyle(color: Color(0xff136A5A), fontSize: 18),
+                      ),
+                      const SizedBox(height: 10),
+                      TextField(
+                        textInputAction: TextInputAction.next,
+                        controller: _barcodeAccKeyTextController,
 
-                    onEditingComplete: () {
-                      print(_barcodeAccKeyTextController);
-                    },
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 15, color: Color(0xff136A5A)),
-                    enabled: true,
-                    // controller: _cuboxIDTextController,
-                    decoration: InputDecoration(
-                      hintText: 'type or scan barcode resi',
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          print('scanQR dong');
-                          scanBarcodeNormal(
-                              _barcodeAccKeyTextController); //scanQR(controller, mode);
+                        onEditingComplete: () {
+                          print(_barcodeAccKeyTextController);
                         },
-                        icon: const Icon(
-                          Icons.camera_alt,
-                          size: 35,
-                          color: Colors.lightBlue,
-                        ),
-                      ),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                      ),
-                      filled: true,
-                      fillColor: Colors.white,
-                      contentPadding: const EdgeInsets.only(
-                          left: 10, bottom: 0, top: 0, right: 0),
-                    ),
-                  ),
-                  // _buildTextFiedScan(_barcodeAccKeyTextController,
-                  //     'type or scan barcode no.resi'),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (_qrcuboxIDTextController.text.isNotEmpty &&
-                            loginController.getAppConnectionState ==
-                                MQTTAppConnectionState.connected) {
-                          _publishMessage(
-                              'courier ${_barcodeAccKeyTextController.text}');
-
-                          _qrcuboxIDTextController.clear();
-                          _barcodeAccKeyTextController.clear();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Try to open the cubox now!'),
+                        textAlign: TextAlign.center,
+                        style:
+                            TextStyle(fontSize: 15, color: Color(0xff136A5A)),
+                        enabled: true,
+                        // controller: _cuboxIDTextController,
+                        decoration: InputDecoration(
+                          hintText: 'type or scan barcode resi',
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              print('scanQR dong');
+                              scanBarcodeNormal(
+                                  _barcodeAccKeyTextController); //scanQR(controller, mode);
+                            },
+                            icon: const Icon(
+                              Icons.camera_alt,
+                              size: 35,
+                              color: Colors.lightBlue,
                             ),
-                          );
-                        }
-                        Future.delayed(
-                          const Duration(seconds: 2),
-                          () {
-                            controller.manager.disconnect();
-                            print('DISCONECTED now');
-                          },
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
+                          ),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
                             borderRadius: BorderRadius.all(
                               Radius.circular(10),
                             ),
                           ),
-                          primary: Color(0xff136A5A),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 35, vertical: 10),
-                          textStyle: TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.bold)),
-                      child: Text('Open'),
-                    ),
+                          filled: true,
+                          fillColor: Colors.white,
+                          contentPadding: const EdgeInsets.only(
+                              left: 10, bottom: 0, top: 0, right: 0),
+                        ),
+                      ),
+                      // _buildTextFiedScan(_barcodeAccKeyTextController,
+                      //     'type or scan barcode no.resi'),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      Center(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (_qrcuboxIDTextController.text.isEmpty ||
+                                _qrcuboxIDTextController.text
+                                    .contains('Failed')) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                      'Please type/scan cubox\'s ID first !'),
+                                ),
+                              );
+                            } else if (_qrcuboxIDTextController
+                                    .text.isNotEmpty &&
+                                loginController.getAppConnectionState ==
+                                    MQTTAppConnectionState.disconnected) {
+                              _configureAndConnect(
+                                  _qrcuboxIDTextController.text);
+                            } else if (_barcodeAccKeyTextController
+                                    .text.isNotEmpty &&
+                                loginController.getAppConnectionState ==
+                                    MQTTAppConnectionState.connected) {
+                              _publishMessage(
+                                  'courier ${_barcodeAccKeyTextController.text}');
+                              controller.setimage = true;
+                              _qrcuboxIDTextController.clear();
+                              _barcodeAccKeyTextController.clear();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Try to open the cubox now!'),
+                                ),
+                              );
+                              Future.delayed(
+                                const Duration(seconds: 2),
+                                () {
+                                  controller.manager.disconnect();
+                                  print('DISCONECTED now');
+                                },
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Please type/scan No.Resi!'),
+                                ),
+                              );
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
+                              primary: Color(0xff136A5A),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 35, vertical: 10),
+                              textStyle: TextStyle(
+                                  fontSize: 24, fontWeight: FontWeight.bold)),
+                          child: Text('Open'),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -317,11 +322,10 @@ class CourierView extends GetView<CourierController> {
     } on PlatformException {
       barcodeScanRes = 'Failed to get platform version.';
     }
-    if (barcodeScanRes.contains('Failed')) {
-      //snackbar
-
-    } else {
+    if ( //!barcodeScanRes.contains('Failed') &&
+        textField == _qrcuboxIDTextController) {
       _configureAndConnect(barcodeScanRes);
+      controller.setimage = false;
     }
     textField.text = barcodeScanRes;
   }

@@ -115,6 +115,7 @@ class HomeView extends GetView<HomeController> {
       builder: (controller) => WillPopScope(
         onWillPop: () async {
           final bool? shouldPop = await showWarning(context);
+          shouldPop ?? controller.manager.disconnect();
 
           return shouldPop ?? false;
         },

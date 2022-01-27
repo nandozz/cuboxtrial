@@ -75,7 +75,7 @@ class ProfileView extends GetView<ProfileController> {
     return WillPopScope(
       onWillPop: () async {
         final bool? shouldPop = await showWarning(context);
-
+        shouldPop ?? homeController.manager.disconnect();
         return shouldPop ?? false;
       },
       child: Stack(

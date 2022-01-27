@@ -22,7 +22,11 @@ class HomeController extends GetxController {
   }
 
   @override
-  void onClose() {}
+  void onClose() {
+    print('ONCLOSE HOME DISCONNECT');
+    manager.disconnect();
+  }
+
   void change(int index) => selectedIndex.value = index;
   // void changeTabIndex(int index) => tabIndex.value = index;
 

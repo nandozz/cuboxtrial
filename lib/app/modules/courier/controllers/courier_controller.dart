@@ -2,9 +2,15 @@ import 'package:cubox/app/data/MQTTManager.dart';
 import 'package:get/get.dart';
 
 class CourierController extends GetxController {
-  final qrcode = true.obs;
+  RxBool _qrcode = true.obs;
 
   late MQTTManager manager;
+
+  void set setimage(bool qr) {
+    _qrcode.value = qr;
+  }
+
+  get qrcode => _qrcode;
 
   @override
   void onInit() {
@@ -17,5 +23,8 @@ class CourierController extends GetxController {
   }
 
   @override
-  void onClose() {}
+  void onClose() {
+    print('ONCLOSE COURIER DISCONNECT');
+    manager.disconnect();
+  }
 }
