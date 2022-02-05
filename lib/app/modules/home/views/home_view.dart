@@ -84,9 +84,7 @@ class HomeView extends GetView<HomeController> {
                   loginController.setReceivedText('');
                   loginController.cubox_ID = '';
                   loginController.access_Key = '';
-                  // Navigator.pop(context);
 
-                  // Get.offAllNamed(Routes.LOGIN);
                   return Navigator.pop(context, true);
                 },
                 child: const Text('Yes'),
@@ -219,6 +217,7 @@ class HomeView extends GetView<HomeController> {
                                         loginController.setReceivedText('');
                                         loginController.cubox_ID = '';
                                         loginController.access_Key = '';
+
                                         Get.offAllNamed(Routes.LOGIN);
                                       }
                                     },
@@ -451,6 +450,7 @@ class HomeView extends GetView<HomeController> {
                                                                                         onLongPress: () {
                                                                                           //All Status - received list
                                                                                           loginController.received.remove(data);
+                                                                                          controller.publishMessage("courier ${data['number']}");
                                                                                         },
                                                                                         child: Container(
                                                                                           padding: EdgeInsets.all(10),

@@ -5,14 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import '../controllers/login_controller.dart';
 
 // ignore: must_be_immutable
 class LoginView extends GetView<LoginController> {
-  final TextEditingController _cuboxIDTextController = TextEditingController();
-  final TextEditingController _cuboxAccKeyTextController =
-      TextEditingController();
+  // final TextEditingController controller.cuboxIDTextController = TextEditingController();
+  // final TextEditingController controller.cuboxAccKeyTextController =
+  //     TextEditingController();
 
   late MQTTManager manager;
 
@@ -69,7 +70,7 @@ class LoginView extends GetView<LoginController> {
                         style:
                             TextStyle(fontSize: 15, color: Color(0xff136A5A)),
                         enabled: true,
-                        controller: _cuboxIDTextController,
+                        controller: controller.cuboxIDTextController,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(
                             borderSide: BorderSide.none,
@@ -97,7 +98,7 @@ class LoginView extends GetView<LoginController> {
                           style:
                               TextStyle(fontSize: 15, color: Color(0xff136A5A)),
                           enabled: true,
-                          controller: _cuboxAccKeyTextController,
+                          controller: controller.cuboxAccKeyTextController,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderSide: BorderSide.none,
@@ -121,17 +122,55 @@ class LoginView extends GetView<LoginController> {
                           ),
                         ),
                       ),
+                      Obx(
+                        () => CheckboxListTile(
+                          title: Text(
+                            'Remember me',
+                            style: TextStyle(
+                              color: Color(0xff136A5A),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          value: controller.isRemember.value,
+                          onChanged: (value) => controller.isRemember.toggle(),
+                          controlAffinity: ListTileControlAffinity.leading,
+                          // checkColor: Colors.amber,
+                          activeColor: Color(0xff136A5A),
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 50),
                   ElevatedButton(
                     onPressed: () {
-                      if (_cuboxIDTextController.text.isNotEmpty &&
-                          _cuboxAccKeyTextController.text.isNotEmpty) {
-                        controller.cubox_ID = _cuboxIDTextController.text;
-                        controller.access_Key = _cuboxAccKeyTextController.text;
+                      if (controller.cuboxIDTextController.text.isNotEmpty &&
+                          controller
+                              .cuboxAccKeyTextController.text.isNotEmpty) {
+                        controller.cubox_ID =
+                            controller.cuboxIDTextController.text;
+                        controller.access_Key =
+                            controller.cuboxAccKeyTextController.text;
                         print('${controller.cuboxID},${controller.accessKey} ');
-                        Get.toNamed(Routes.HOME);
+                        if (controller.isRemember.value) {
+                          final box = GetStorage();
+                          box.write(
+                            'dataUser',
+                            {
+                              'id': '${controller.cuboxIDTextController.text}',
+                              'key':
+                                  '${controller.cuboxAccKeyTextController.text}',
+                              'remember': controller.isRemember.value,
+                            },
+                          );
+                        } else {
+                          final box = GetStorage();
+                          //hapus storage
+                          if (box.read('dataUser') != null) {
+                            box.erase();
+                          }
+                        }
+                        // Get.toNamed(Routes.HOME);
+                        Get.offAllNamed(Routes.HOME);
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(

@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 
 enum MQTTAppConnectionState { connected, disconnected, connecting }
@@ -7,8 +9,12 @@ MQTTAppConnectionState _appConnectionState =
 
 class LoginController extends GetxController {
   final isHiddenPass = true.obs;
+  final isRemember = false.obs;
+
   final _cuboxID = ''.obs;
   final _accessKey = ''.obs;
+  late TextEditingController cuboxIDTextController;
+  late TextEditingController cuboxAccKeyTextController;
 
   var _dbList = [].obs;
   final _onDelivery = [].obs;
@@ -65,6 +71,39 @@ class LoginController extends GetxController {
 
       addtoReceived({'number': '${_justReceived[1]}', 'date': '${_dateTime}'});
       _dbList.remove('${_justReceived[1]}');
+      Get.snackbar(
+        "",
+        '',
+        titleText: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Cubox : New Parcel',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  '${_dateTime}',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text('ID: ${_justReceived[1]}')
+          ],
+        ),
+        backgroundColor: Colors.lightBlue[50],
+      );
       // print('nih received: ${_received[0]}');
 
       // _historyText.value = text;
@@ -96,7 +135,7 @@ class LoginController extends GetxController {
   }
 
   void dateNow() {
-    _dateTime.value = DateFormat.yMMMd().format(DateTime.now());
+    _dateTime.value = DateFormat.jm().format(DateTime.now());
     // print('nih dateTime: ${_dateTime}');
   }
 
@@ -139,8 +178,18 @@ class LoginController extends GetxController {
   String get accessKey => _accessKey.value;
 
   @override
-  void onInit() {
+  void onInit() async {
+    cuboxIDTextController = TextEditingController();
+    cuboxAccKeyTextController = TextEditingController();
     super.onInit();
+    await GetStorage.init();
+    final box = GetStorage();
+    if (box.read('dataUser') != null) {
+      final data = box.read('dataUser') as Map<String, dynamic>;
+      cuboxIDTextController.text = data['id'];
+      cuboxAccKeyTextController.text = data['key'];
+      isRemember.value = data['remember'];
+    }
   }
 
   @override
@@ -149,7 +198,9 @@ class LoginController extends GetxController {
   }
 
   @override
-  void onClose() {}
+  void onClose() {
+    super.onClose();
+  }
 
   // void tooglePassView() => isHiddenPass.value = !isHiddenPass.value;
 }
