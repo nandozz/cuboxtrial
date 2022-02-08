@@ -10,6 +10,7 @@ MQTTAppConnectionState _appConnectionState =
 class LoginController extends GetxController {
   final isHiddenPass = true.obs;
   final isRemember = false.obs;
+  final isConnected = false.obs;
 
   final _cuboxID = ''.obs;
   final _accessKey = ''.obs;
@@ -43,6 +44,7 @@ class LoginController extends GetxController {
 
     if (text.contains('connected')) {
       _connection.value = 'Connected';
+      isConnected.value = true;
     }
     if (text.contains('listempty')) {
       _dbList.clear();
@@ -127,6 +129,7 @@ class LoginController extends GetxController {
 
   void addtoReceived(Map data) {
     _received.add(data);
+
     // print("nih received history: ${_received}");
   }
 
@@ -135,7 +138,7 @@ class LoginController extends GetxController {
   }
 
   void dateNow() {
-    _dateTime.value = DateFormat.jm().format(DateTime.now());
+    _dateTime.value = DateFormat.MMMd().add_jm().format(DateTime.now());
     // print('nih dateTime: ${_dateTime}');
   }
 
@@ -184,11 +187,13 @@ class LoginController extends GetxController {
     super.onInit();
     await GetStorage.init();
     final box = GetStorage();
+    //READ Storage
     if (box.read('dataUser') != null) {
       final data = box.read('dataUser') as Map<String, dynamic>;
       cuboxIDTextController.text = data['id'];
       cuboxAccKeyTextController.text = data['key'];
       isRemember.value = data['remember'];
+      _received.value = data['received'];
     }
   }
 

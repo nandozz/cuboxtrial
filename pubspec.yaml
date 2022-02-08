@@ -32,4 +32,5 @@ flutter:
     - assets/images/cubox-scanning.png
     - assets/images/parcel-scanning.png
     - assets/icons/logout.png
-    - assets/icons/cubox-icon.png
+    - assets/icons/cubox-connected.png
+    - assets/icons/cubox-disconnect.png

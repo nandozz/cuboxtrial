@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:cubox/app/data/MQTTManager.dart';
 import 'package:cubox/app/modules/login/controllers/login_controller.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 class HomeController extends GetxController {
   late MQTTManager manager;
@@ -14,6 +15,21 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+
+    final dataReceived = GetStorage('${loginController.cuboxID}');
+    if (dataReceived.read('allData') != null) {
+      print('Data ${loginController.cuboxID} Read');
+      Map<String, dynamic> data = dataReceived.read('allData');
+      // print('aha data : ${data.values}');
+
+      for (Map map in data['received']) {
+        // print('aha map : $map');
+        loginController.addtoReceived(map);
+      }
+    } else {
+      // print('data Received NOT available');
+      print('Data ${loginController.cuboxID} NOT available');
+    }
   }
 
   @override
@@ -23,8 +39,26 @@ class HomeController extends GetxController {
 
   @override
   void onClose() {
-    print('ONCLOSE HOME DISCONNECT');
+    // print('ONCLOSE HOME DISCONNECT');
+
     manager.disconnect();
+    final dataReceived = GetStorage('${loginController.cuboxID}');
+
+    if (loginController.received.isNotEmpty) {
+      dataReceived.write(
+        'allData',
+        {
+          'received': loginController.received,
+        },
+      );
+      print('Data ${loginController.cuboxID} Write');
+    } else {
+      //hapus storage
+      if (dataReceived.read('allData') != null) {
+        dataReceived.erase();
+        print('Data ${loginController.cuboxID} Delete');
+      }
+    }
   }
 
   void change(int index) => selectedIndex.value = index;

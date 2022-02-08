@@ -130,7 +130,7 @@ class ProfileView extends GetView<ProfileController> {
                 // top: 24,
                 child: GestureDetector(
                   onTap: () {},
-                  child: Image.asset('assets/icons/cubox-icon.png'),
+                  child: Image.asset('assets/icons/cubox-connected.png'),
                 ),
               ),
             ],

@@ -51,7 +51,7 @@ class CourierView extends GetView<CourierController> {
             backgroundColor: Color(0xFF7BD2C3),
             centerTitle: true,
             actions: [
-              Image.asset('assets/icons/cubox-icon.png'),
+              Image.asset('assets/icons/cubox-connected.png'),
               SizedBox(
                 width: 10,
               )
@@ -287,7 +287,7 @@ class CourierView extends GetView<CourierController> {
                                 ),
                                 primary: Color(0xff136A5A),
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: 145, vertical: 10),
+                                    horizontal: 40, vertical: 15),
                                 textStyle: TextStyle(
                                     fontSize: 24, fontWeight: FontWeight.bold)),
                             child: Text('Open'),

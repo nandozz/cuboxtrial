@@ -169,8 +169,8 @@ class LoginView extends GetView<LoginController> {
                             box.erase();
                           }
                         }
-                        // Get.toNamed(Routes.HOME);
-                        Get.offAllNamed(Routes.HOME);
+                        Get.toNamed(Routes.HOME);
+                        // Get.offAllNamed(Routes.HOME);
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(

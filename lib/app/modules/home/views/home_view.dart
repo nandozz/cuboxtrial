@@ -67,8 +67,10 @@ class HomeView extends GetView<HomeController> {
                   ),
                   primary: Color(0xff136A5A),
                   padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                  textStyle:
-                      TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  textStyle: TextStyle(
+                      fontSize: 20,
+                      color: Colors.grey[700],
+                      fontWeight: FontWeight.bold),
                 ),
                 onPressed: () {
                   // currentAppState.setReceivedText('listempty');
@@ -82,9 +84,12 @@ class HomeView extends GetView<HomeController> {
                   //   },
                   // );
                   loginController.setReceivedText('');
-                  loginController.cubox_ID = '';
-                  loginController.access_Key = '';
+                  // loginController.cubox_ID = '';
+                  // loginController.access_Key = '';
 
+                  // loginController.cuboxIDTextController.dispose();
+                  // loginController.cuboxAccKeyTextController.dispose();
+                  // print('LoginController DISPOSE from home');
                   return Navigator.pop(context, true);
                 },
                 child: const Text('Yes'),
@@ -125,8 +130,8 @@ class HomeView extends GetView<HomeController> {
             );
 
             loginController.setReceivedText('');
-            loginController.cubox_ID = '';
-            loginController.access_Key = '';
+            // loginController.cubox_ID = '';
+            // loginController.access_Key = '';
             Get.offAllNamed(Routes.LOGIN);
           }
           return shouldPop;
@@ -196,47 +201,40 @@ class HomeView extends GetView<HomeController> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Positioned(
-                                  // left: 12,
-                                  // top: 24,
-                                  child: GestureDetector(
-                                    onTap: () async {
-                                      // //('Logout from home');
-                                      final bool? shouldPop =
-                                          await showWarning(context);
-                                      shouldPop ?? false;
+                                GestureDetector(
+                                  onTap: () async {
+                                    // //('Logout from home');
+                                    final bool? shouldPop =
+                                        await showWarning(context);
+                                    shouldPop ?? false;
 
-                                      if (shouldPop!) {
-                                        Future.delayed(
-                                          const Duration(seconds: 2),
-                                          () {
-                                            controller.manager.disconnect();
-                                          },
-                                        );
+                                    if (shouldPop!) {
+                                      Future.delayed(
+                                        const Duration(seconds: 2),
+                                        () {
+                                          controller.manager.disconnect();
+                                        },
+                                      );
 
-                                        loginController.setReceivedText('');
-                                        loginController.cubox_ID = '';
-                                        loginController.access_Key = '';
+                                      loginController.setReceivedText('');
+                                      // loginController.cubox_ID = '';
+                                      // loginController.access_Key = '';
 
-                                        Get.offAllNamed(Routes.LOGIN);
-                                      }
-                                    },
-                                    child:
-                                        Image.asset('assets/icons/logout.png'),
-                                  ),
+                                      Get.offAllNamed(Routes.LOGIN);
+                                    }
+                                  },
+                                  child: Image.asset('assets/icons/logout.png'),
                                 ),
                                 Text(
                                   loginController.getConnectionStatus,
                                   style: TextStyle(fontSize: 25),
                                 ),
-                                Positioned(
-                                  // left: 112,
-                                  // top: 24,
-                                  child: GestureDetector(
-                                    onTap: () {},
-                                    child: Image.asset(
-                                        'assets/icons/cubox-icon.png'),
-                                  ),
+                                GestureDetector(
+                                  onTap: () {},
+                                  child: Image.asset(loginController
+                                          .isConnected.value
+                                      ? 'assets/icons/cubox-connected.png'
+                                      : 'assets/icons/cubox-disconnect.png'),
                                 ),
                               ],
                             ),
@@ -265,7 +263,7 @@ class HomeView extends GetView<HomeController> {
                                   //   style: TextStyle(
                                   //     fontSize: 35,
                                   //     color: Colors.white,
-                                  //     fontWeight: FontWeight.bold,
+                                  //     color: Colors.grey[700],fontWeight: FontWeight.bold,
                                   //   ),
                                   // ),
                                   SizedBox(height: 70),
@@ -444,7 +442,10 @@ class HomeView extends GetView<HomeController> {
                                                                                       color: Color(0xffF1FDFB),
                                                                                     ),
                                                                                     child: ListTile(
-                                                                                      title: Text("${data['number']}"),
+                                                                                      title: Text(
+                                                                                        "${data['number']}",
+                                                                                        style: TextStyle(color: Colors.grey[700], fontWeight: FontWeight.bold),
+                                                                                      ),
                                                                                       subtitle: Text("${data['date']}"),
                                                                                       trailing: GestureDetector(
                                                                                         onLongPress: () {
@@ -495,7 +496,10 @@ class HomeView extends GetView<HomeController> {
                                                                                         color: Color(0xffF1FDFB),
                                                                                       ),
                                                                                       child: ListTile(
-                                                                                        title: Text(data),
+                                                                                        title: Text(
+                                                                                          data,
+                                                                                          style: TextStyle(color: Colors.grey[700], fontWeight: FontWeight.bold),
+                                                                                        ),
                                                                                         trailing: GestureDetector(
                                                                                           onLongPress: () {
                                                                                             //All Status - onDelivery list
@@ -575,7 +579,10 @@ class HomeView extends GetView<HomeController> {
                                                                                 color: Color(0xffF1FDFB),
                                                                               ),
                                                                               child: ListTile(
-                                                                                title: Text(data),
+                                                                                title: Text(
+                                                                                  data,
+                                                                                  style: TextStyle(color: Colors.grey[700], fontWeight: FontWeight.bold),
+                                                                                ),
                                                                                 trailing: GestureDetector(
                                                                                   onLongPress: () {
                                                                                     // loginController.dbList.remove(data);
@@ -643,7 +650,10 @@ class HomeView extends GetView<HomeController> {
                                                                                 color: Color(0xffF1FDFB),
                                                                               ),
                                                                               child: ListTile(
-                                                                                title: Text("${data['number']}"),
+                                                                                title: Text(
+                                                                                  "${data['number']}",
+                                                                                  style: TextStyle(color: Colors.grey[700], fontWeight: FontWeight.bold),
+                                                                                ),
                                                                                 subtitle: Text("${data['date']}"),
                                                                                 trailing: GestureDetector(
                                                                                   onLongPress: () => loginController.received.remove(data),
