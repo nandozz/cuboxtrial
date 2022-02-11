@@ -185,15 +185,18 @@ class LoginController extends GetxController {
     cuboxIDTextController = TextEditingController();
     cuboxAccKeyTextController = TextEditingController();
     super.onInit();
+    // await GetStorage.init();
     await GetStorage.init();
+
+    print('aha oninit login_controller');
     final box = GetStorage();
     //READ Storage
     if (box.read('dataUser') != null) {
       final data = box.read('dataUser') as Map<String, dynamic>;
+      print('aha oninit login_controller: $data');
       cuboxIDTextController.text = data['id'];
       cuboxAccKeyTextController.text = data['key'];
       isRemember.value = data['remember'];
-      _received.value = data['received'];
     }
   }
 

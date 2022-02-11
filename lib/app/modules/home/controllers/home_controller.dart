@@ -13,13 +13,16 @@ class HomeController extends GetxController {
   final close = true.obs;
   // RxInt tabIndex = 0.obs;
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
-
-    final dataReceived = GetStorage('${loginController.cuboxID}');
-    if (dataReceived.read('allData') != null) {
-      print('Data ${loginController.cuboxID} Read');
-      Map<String, dynamic> data = dataReceived.read('allData');
+    await GetStorage.init();
+    final dataReceived = GetStorage();
+    if (dataReceived
+            .read('${loginController.cuboxID}/${loginController.accessKey}') !=
+        null) {
+      print('aha Data ${loginController.cuboxID} Read');
+      Map<String, dynamic> data = dataReceived
+          .read('${loginController.cuboxID}/${loginController.accessKey}');
       // print('aha data : ${data.values}');
 
       for (Map map in data['received']) {
@@ -27,8 +30,8 @@ class HomeController extends GetxController {
         loginController.addtoReceived(map);
       }
     } else {
-      // print('data Received NOT available');
-      print('Data ${loginController.cuboxID} NOT available');
+      print(
+          'aha Data ${loginController.cuboxID}/${loginController.accessKey} NOT available');
     }
   }
 
@@ -42,23 +45,35 @@ class HomeController extends GetxController {
     // print('ONCLOSE HOME DISCONNECT');
 
     manager.disconnect();
-    final dataReceived = GetStorage('${loginController.cuboxID}');
+    final dataReceived = GetStorage();
+    dataReceived.write(
+      '${loginController.cuboxID}/${loginController.accessKey}',
+      {
+        'received': loginController.received,
+      },
+    );
+    // print(
+    //     'aha Data ${loginController.cuboxID}/${loginController.accessKey} Save');
 
-    if (loginController.received.isNotEmpty) {
-      dataReceived.write(
-        'allData',
-        {
-          'received': loginController.received,
-        },
-      );
-      print('Data ${loginController.cuboxID} Write');
-    } else {
-      //hapus storage
-      if (dataReceived.read('allData') != null) {
-        dataReceived.erase();
-        print('Data ${loginController.cuboxID} Delete');
-      }
-    }
+    // if (loginController.received.isNotEmpty) {
+    //   dataReceived.write(
+    //     '${loginController.cuboxID}',
+    //     {
+    //       'received': loginController.received,
+    //     },
+    //   );
+    //   print('aha Data ${loginController.cuboxID} Write');
+    // } else {
+    //   //hapus storage
+    //   // dataReceived.erase();
+    //   dataReceived.write(
+    //     '${loginController.cuboxID}',
+    //     {
+    //       'received': [],
+    //     },
+    //   );
+    //   print('aha Data ${loginController.cuboxID} NOT Delete');
+    // }
   }
 
   void change(int index) => selectedIndex.value = index;

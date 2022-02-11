@@ -166,7 +166,15 @@ class LoginView extends GetView<LoginController> {
                           final box = GetStorage();
                           //hapus storage
                           if (box.read('dataUser') != null) {
-                            box.erase();
+                            // box.erase();
+                            box.write(
+                              'dataUser',
+                              {
+                                'id': '',
+                                'key': '',
+                                'remember': controller.isRemember.value,
+                              },
+                            );
                           }
                         }
                         Get.toNamed(Routes.HOME);
