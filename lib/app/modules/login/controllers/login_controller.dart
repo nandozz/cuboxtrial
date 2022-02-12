@@ -185,7 +185,6 @@ class LoginController extends GetxController {
     cuboxIDTextController = TextEditingController();
     cuboxAccKeyTextController = TextEditingController();
     super.onInit();
-    // await GetStorage.init();
     await GetStorage.init();
 
     print('aha oninit login_controller');

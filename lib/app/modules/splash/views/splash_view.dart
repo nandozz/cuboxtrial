@@ -41,7 +41,7 @@ class SplashView extends GetView<SplashController> {
                     Text(
                       'Your parcel receiver',
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Colors.white70,
                         fontSize: 20,
                       ),
                     ),

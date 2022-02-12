@@ -209,9 +209,10 @@ class LoginView extends GetView<LoginController> {
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               print('Register');
+                              Get.toNamed(Routes.REGISTER);
                               //Goto Register screen
                             },
-                          text: 'Regrister',
+                          text: 'Register',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Color(0xff136A5A),

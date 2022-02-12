@@ -22,15 +22,16 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    # - assets/images
-    # - assets/icons
-    - assets/images/cubox.png
-    - assets/images/cubox-lock.png
-    - assets/images/cubox-lock-big.png
-    - assets/images/cubox-unlock.png
-    - assets/images/splash-image.png
-    - assets/images/cubox-scanning.png
-    - assets/images/parcel-scanning.png
-    - assets/icons/logout.png
-    - assets/icons/cubox-connected.png
-    - assets/icons/cubox-disconnect.png
+    - assets/images/
+    - assets/icons/
+    # - assets/images/cubox.png
+    # - assets/images/cubox-lock.png
+    # - assets/images/cubox-lock-big.png
+    # - assets/images/cubox-unlock.png
+    # - assets/images/splash-image.png
+    # - assets/images/cubox-scanning.png
+    # - assets/images/parcel-scanning.png
+    # - assets/images/cubox-DeviceID.png
+    # - assets/icons/logout.png
+    # - assets/icons/cubox-connected.png
+    # - assets/icons/cubox-disconnect.png

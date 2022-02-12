@@ -45,8 +45,12 @@ class CourierView extends GetView<CourierController> {
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
           appBar: AppBar(
-            title: Obx(() => Text(
-                controller.qrcode.value ? 'cubox scanner' : 'Parcel scanner')),
+            title: Obx(
+              () => Text(
+                controller.qrcode.value ? 'cubox scanner' : 'Parcel scanner',
+                style: TextStyle(fontSize: 32),
+              ),
+            ),
             elevation: 0,
             backgroundColor: Color(0xFF7BD2C3),
             centerTitle: true,

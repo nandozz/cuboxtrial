@@ -130,7 +130,9 @@ class ProfileView extends GetView<ProfileController> {
                 // top: 24,
                 child: GestureDetector(
                   onTap: () {},
-                  child: Image.asset('assets/icons/cubox-connected.png'),
+                  child: Image.asset(loginController.isConnected.value
+                      ? 'assets/icons/cubox-connected.png'
+                      : 'assets/icons/cubox-disconnect.png'),
                 ),
               ),
             ],
@@ -190,17 +192,24 @@ class ProfileView extends GetView<ProfileController> {
                                     homeController.close.toggle();
                                     // //print('Box Open');
                                   },
-                                  child: Container(
-                                    width: 144,
-                                    height: 144,
-                                    child: FittedBox(
-                                      fit: BoxFit.fill,
-                                      child: homeController.close.value
-                                          ? Image.asset(
-                                              'assets/images/cubox-lock-big.png')
-                                          : Image.asset(
-                                              'assets/images/cubox-unlock.png'),
-                                    ),
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        width: 144,
+                                        height: 144,
+                                        child: FittedBox(
+                                          fit: BoxFit.fill,
+                                          child: homeController.close.value
+                                              ? Image.asset(
+                                                  'assets/images/cubox-lock.png')
+                                              : Image.asset(
+                                                  'assets/images/cubox-unlock.png'),
+                                        ),
+                                      ),
+                                      Text(homeController.close.value
+                                          ? 'Tap to open'
+                                          : 'Tap to lock'),
+                                    ],
                                   ),
                                 ),
                                 SizedBox(height: 15),
