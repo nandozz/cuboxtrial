@@ -2,22 +2,32 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class ConfigurationController extends GetxController {
+  RxBool numberInputValid = false.obs;
   RxBool isHidPass = true.obs;
-  RxBool isAccKey = true.obs;
-  var _locations = ['Wi-Fi A', 'Wi-Fi B', 'Wi-Fi C', 'Wi-Fi D'].obs; // Option 2
-  final _selectedLocation = Rxn<String>(); // Option 2
+  RxBool isPinAccess = true.obs;
+  var _ssidList = ['Thanks God', 'Free'].obs; // Option 2
+  final _selectedSSID = Rxn<String>(); // Option 2
   TextEditingController passwordWifi = TextEditingController();
-  TextEditingController accessKey = TextEditingController();
+  TextEditingController pinAccess = TextEditingController();
+  // TextEditingController accessKey = TextEditingController();
 
-  List get location => _locations;
-  String? get selectedLocation => _selectedLocation.value;
-  void set setLocation(String loc) {
-    _selectedLocation.value = loc;
+  List get ssid => _ssidList;
+  String? get selectedSSID => _selectedSSID.value;
+  void set setSSID(String loc) {
+    _selectedSSID.value = loc;
+  }
+
+  void loadData() {
+    // Wifi.list('').then((list) {
+    //   _ssidList.value = list;
+    //   print(_ssidList);
+    // });
   }
 
   @override
   void onInit() {
     super.onInit();
+    loadData();
   }
 
   @override
@@ -30,6 +40,7 @@ class ConfigurationController extends GetxController {
     // print('password WIFi: ${passwordWifi.text}');
     // print('Access Key: ${accessKey.text}');
     passwordWifi.dispose();
-    accessKey.dispose();
+    // accessKey.dispose();
+    pinAccess.dispose();
   }
 }

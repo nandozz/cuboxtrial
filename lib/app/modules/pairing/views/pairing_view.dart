@@ -1,6 +1,6 @@
 import 'package:cubox/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
-
+import 'package:app_settings/app_settings.dart';
 import 'package:get/get.dart';
 
 import '../controllers/pairing_controller.dart';
@@ -106,18 +106,22 @@ class PairingView extends GetView<PairingController> {
                             color: Color(0xff136A5A),
                           ),
                         ),
-                        TextSpan(
-                          text: '3. Click ',
-                          style: TextStyle(
-                            color: Color(0xff5B5B5B),
-                          ),
-                        ),
-                        TextSpan(
-                          text: 'Wifi Setting.',
-                          style: TextStyle(
-                            color: Color(0xff136A5A),
-                          ),
-                        ),
+                        // TextSpan(
+                        //   text: '3. Click ',
+                        //   style: TextStyle(
+                        //     color: Color(0xff5B5B5B),
+                        //   ),
+                        // ),
+                        // TextSpan(
+                        //   recognizer: TapGestureRecognizer()
+                        //     ..onTap = () {
+                        //       AppSettings.openAppSettings();
+                        //     },
+                        //   text: 'Submit.',
+                        //   style: TextStyle(
+                        //     color: Color(0xff136A5A),
+                        //   ),
+                        // ),
                       ],
                     ),
                     style: TextStyle(
@@ -138,8 +142,14 @@ class PairingView extends GetView<PairingController> {
           borderRadius: BorderRadius.all(Radius.circular(10)),
           color: const Color(0xff136A5A),
           child: InkWell(
-            onTap: () {
-              Get.toNamed(Routes.CONFIGURATION);
+            onTap: () async {
+              AppSettings.openWIFISettings(asAnotherTask: true).then(
+                (_) {
+                  Get.toNamed(Routes.CONFIGURATION);
+                },
+              );
+
+              print('Wi-Fi Settings');
             },
             child: const SizedBox(
               height: kToolbarHeight,

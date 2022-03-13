@@ -1,8 +1,7 @@
 import 'package:cubox/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 import '../controllers/configuration_controller.dart';
 
 class ConfigurationView extends GetView<ConfigurationController> {
@@ -51,7 +50,7 @@ class ConfigurationView extends GetView<ConfigurationController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Wi-Fi connection',
+                      'Setup your cubox',
                       style: TextStyle(
                           fontSize: 24,
                           color: Color(0xff136A5A),
@@ -94,15 +93,15 @@ class ConfigurationView extends GetView<ConfigurationController> {
                               child: DropdownButton(
                                 hint: Text('Please select Your Wi-Fi'),
                                 onChanged: (newValue) {
-                                  controller.setLocation = newValue.toString();
+                                  controller.setSSID = newValue.toString();
                                 },
                                 isExpanded: true,
-                                value: controller.selectedLocation,
-                                items: controller.location.map(
-                                  (location) {
+                                value: controller.selectedSSID,
+                                items: controller.ssid.map(
+                                  (ssid) {
                                     return DropdownMenuItem(
-                                      child: new Text(location),
-                                      value: location,
+                                      child: new Text(ssid),
+                                      value: ssid,
                                     );
                                   },
                                 ).toList(),
@@ -177,34 +176,64 @@ class ConfigurationView extends GetView<ConfigurationController> {
                       height: 25,
                     ),
                     Text(
-                      'Access Key',
+                      'PIN Access',
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text.rich(
+                      TextSpan(
+                        text: 'PIN to unlock ',
+                        children: [
+                          TextSpan(
+                            text: 'cubox',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xff136A5A),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     SizedBox(
                       height: 15,
                     ),
                     Obx(
                       () => TextField(
-                        obscureText: controller.isAccKey.value,
-                        controller: controller.accessKey,
+                        keyboardType: TextInputType.number,
+                        maxLength: 5,
+                        onChanged: (String val) {
+                          final v = int.tryParse(val);
+                          if (v == null || val.length < 5) {
+                            controller.numberInputValid.value = false;
+                          } else {
+                            controller.numberInputValid.value = true;
+                          }
+                        },
+                        obscureText: controller.isPinAccess.value,
+                        controller: controller.pinAccess,
                         style: TextStyle(
                           fontSize: 16,
                         ),
                         decoration: InputDecoration(
+                          errorText: controller.numberInputValid.value
+                              ? null
+                              : 'Please enter 5 digits number',
                           floatingLabelBehavior: FloatingLabelBehavior.never,
                           prefixIcon:
                               Image.asset('assets/icons/cubox-accesskey.png'),
                           suffixIcon: IconButton(
-                            onPressed: () => controller.isAccKey.toggle(),
+                            onPressed: () => controller.isPinAccess.toggle(),
                             color: Color(0xff136A5A),
                             icon: Icon(
-                              controller.isAccKey.value
+                              controller.isPinAccess.value
                                   ? Icons.visibility_off
                                   : Icons.visibility,
                             ),
                           ),
-                          hintText: 'Create to Login',
+                          hintText: 'Create new PIN',
                           hintStyle: TextStyle(
                             color: Color(0xff9C9C9C),
                           ),
@@ -241,10 +270,31 @@ class ConfigurationView extends GetView<ConfigurationController> {
           padding: const EdgeInsets.all(8.0),
           child: Material(
             borderRadius: BorderRadius.all(Radius.circular(10)),
-            color: const Color(0xff136A5A),
+            color: controller.numberInputValid.value
+                ? const Color(0xff136A5A)
+                : Color(0xffb5b5b5),
             child: InkWell(
-              onTap: () {
-                Get.offAllNamed(Routes.COMPLETE_REGISTER);
+              onTap: () async {
+                if (controller.numberInputValid.value &&
+                    controller.selectedSSID!.isNotEmpty) {
+                  // final url = 'http://192.168.4.1/';
+                  final url = 'http://192.168.4.1';
+
+                  ///setting?groupid=-465154529&ssid=${controller.selectedSSID}&pass=${controller.passwordWifi.text}&address=-&pin=${controller.pinAccess.text}&key=cas';
+                  if (await canLaunch(url)) {
+                    await launch(url,
+                            enableJavaScript: true, forceWebView: false)
+                        .then(
+                      (_) {
+                        Get.offAllNamed(Routes.COMPLETE_REGISTER);
+                      },
+                    );
+                  } else {
+                    print('error..');
+                  }
+                } else {
+                  null;
+                }
               },
               child: const SizedBox(
                 height: kToolbarHeight,
